@@ -1,0 +1,75 @@
+
+   Leetcode Link :- https://leetcode.com/problems/check-if-n-and-its-double-exist/description/
+
+
+
+
+class Solution {
+public:
+    int bSearch(vector<int> arr, int target) {
+        int l = 0, r = arr.size() - 1;
+
+        while(l <= r) {
+            int mid = l + (r-l)/2;
+
+            if (arr[mid] == target) {
+                return mid;
+            }
+            else if (arr[mid] < target) {
+                l = mid + 1;
+            }
+            else {
+                r = mid - 1;
+            }
+        }
+        return -1;
+    }
+
+    bool checkIfExist(vector<int>& arr) {
+        int n = arr.size();
+        sort(begin(arr), end(arr));
+        
+        for (int i=0; i<n; i++) {
+            int j = bSearch(arr, arr[i]*2);
+
+            if (i != j && j != -1) {
+                return true;
+            }
+        }
+        return false;
+        
+    }
+};
+
+
+
+-----------------------------------
+Algo:-
+------------------
+
+Algorithm:
+
+Sort the array: Sort the given array in ascending order.
+Iterate through the array:
+  For each element arr[i]:
+  Perform a binary search to find 2 * arr[i] in the sorted array.
+  If 2 * arr[i] is found at an index j different from i, return true.
+Return false: If no such pair is found after iterating through the entire array, return false.
+Explanation:
+
+The algorithm leverages the sorted property of the array to efficiently find pairs of elements where one is double the other.
+
+Sorting: Sorting the array ensures that elements with the same value are adjacent, and it allows for efficient binary search.
+
+Binary Search: For each element arr[i], a binary search is performed to find 2 * arr[i] in the sorted array. This is a more efficient approach than a linear search.
+
+Checking for Duplicates: The condition i != j ensures that we don't consider the same element as both arr[i] and 2 * arr[i].
+Time Complexity:
+
+Sorting the array: O(n log n)
+Iterating through the array and performing binary search for each element: O(n log n)
+Overall Time Complexity: O(n log n)
+Space Complexity:
+
+O(1) extra space, as the sorting is done in-place.
+This algorithm provides an efficient solution to the problem of finding a pair of elements where one is double the other in a given array.

@@ -1,0 +1,72 @@
+
+GFG Link :- https://www.geeksforgeeks.org/problems/minimum-characters-to-be-added-at-front-to-make-string-palindrome/1?page=1&difficulty
+
+class Solution {
+  public:
+    int minChar(string& s) {
+        // Write your code here
+        int size = s.size();
+        string rev = s;
+        reverse(rev.begin(), rev.end());
+        
+        s += '$';
+        s += rev;
+        
+        int n = s.size();
+        vector<int> lps(n, 0);
+        
+        int pre = 0, suf = 1;
+        
+        while(suf < s.size()) 
+        {
+            if (s[pre] == s[suf])
+            {
+                lps[suf] = pre + 1;
+                suf++, pre++;
+            }
+            else
+            {
+                if (pre == 0)   
+                suf++;
+                else
+                {
+                    pre = lps[pre - 1];
+                }
+            }
+        }
+        
+        return size - lps[n - 1];
+    }
+};
+
+
+
+
+Algorithm:
+
+Reverse the string:
+  Create a reversed copy of the original string.
+Concatenate strings:
+  Append a special character (e.g., '$') to the original string.
+  Concatenate the reversed string to the original string.
+Compute the Longest Prefix Suffix (LPS) array:
+  Initialize an LPS array to store the length of the longest proper prefix which is also a suffix for each prefix of the concatenated string.
+  Use a two-pointer approach to calculate the LPS array efficiently.
+  Calculate the minimum characters to be added:
+  The length of the original string minus the last element of the LPS array gives the minimum number of characters to be added.
+Core Concept:
+
+  The core concept behind this approach is the Longest Prefix Suffix (LPS) array. This array helps us identify the longest common prefix and     suffix   of a given string. By constructing a new string by concatenating the original string, a special character, and its reverse, we can leverage   the LPS array to find the minimum number of characters needed to make the original string a palindrome.
+
+Explanation:
+
+Concatenation and LPS Array:
+
+Concatenating the original string and its reverse creates a string where the palindrome can be found as a prefix or suffix.
+The LPS array helps us identify the longest common prefix and suffix of this concatenated string.
+Finding the Minimum Characters:
+
+The last element of the LPS array represents the length of the longest proper prefix that is also a suffix of the concatenated string.
+Subtracting this length from the original string's length gives the minimum number of characters needed to be added to make the string a palindrome.
+
+  By using the LPS array and the properties of palindromic strings, this algorithm efficiently calculates the minimum number of characters required to make a string a palindrome.

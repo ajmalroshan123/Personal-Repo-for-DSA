@@ -1,0 +1,78 @@
+
+   GFG Link :- https://www.geeksforgeeks.org/problems/count-occurences-of-anagrams5839/1
+   
+   
+Given a word pat and a text txt. Return the count of the occurences of anagrams of the word in the text.
+
+Example 1:
+
+Input:
+txt = forxxorfxdofr
+pat = for
+Output: 3
+Explanation: for, orf and ofr appears
+in the txt, hence answer is 3.
+Example 2:
+
+Input:
+txt = aabaabaa
+pat = aaba
+Output: 4
+Explanation: aaba is present 4 times
+in txt. .
+
+
+
+from collections import defaultdict
+
+def count_anagrams(pat, txt):
+    k = len(pat)  # Length of the pattern
+    n = len(txt)  # Length of the text
+
+    # Counting pattern characters
+    mpat = defaultdict(int)
+    for char in pat:
+        mpat[char] += 1
+
+    # Storing unique element size in count
+    cnt = len(mpat)
+
+    # ans stores occurrences of anagrams; i and j are initialization values
+    ans = 0
+    i = 0
+    j = 0
+
+    while j < n:
+        # Searching for pattern in txt
+        if txt[j] in mpat:
+            # If found, decrement the occurrence
+            mpat[txt[j]] -= 1
+            
+            # If occurrence is 0 in map, then decrement count of unique elements
+            if mpat[txt[j]] == 0:
+                cnt -= 1
+        
+        # Window Expansion
+        if j - i + 1 < k:
+            j += 1
+        elif j - i + 1 == k:
+            # Pattern match found
+            if cnt == 0:
+                ans += 1
+            
+            # Remove previous calculation
+            if txt[i] in mpat:
+                mpat[txt[i]] += 1
+                if mpat[txt[i]] == 1:
+                    cnt += 1
+            
+            i += 1
+            j += 1
+
+    return ans
+
+# Example usage
+pattern = "abc"
+text = "cbabcacab"
+result = count_anagrams(pattern, text)
+print(f"Number of anagrams of '{pattern}' in '{text}': {result}")

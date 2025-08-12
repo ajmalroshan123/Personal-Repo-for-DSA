@@ -1,0 +1,115 @@
+
+Leetcode Link :-  
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        int n = s.length();
+        int i = 0; 
+        int l = 0; 
+        int r = 0;
+
+        reverse(s.begin(), s.end());
+
+        while( i < n ){
+            while(i < n && s[i] != ' '){
+                s[r++] = s[i++];
+            }
+
+            if( l < r) {
+                reverse(s.begin()+l, s.begin()+r);
+
+                s[r] = ' ';
+                r++;
+
+                l = r;
+            }
+
+            i++;
+        }
+        s = s.substr(0, r-1);
+
+        return s;
+    }
+};
+
+
+
+python :-
+------------------------------------------
+
+def reverseWords(s: str) -> str:
+    return ' '.join(word[::-1] for word in s[::-1].split())
+    
+
+print(reverseWords("Let's take LeetCode contest"))
+
+
+
+
+Alogrithm:-
+------------------------------------------
+
+
+Algorithm:
+
+Reverse the entire string: Reverse the entire input string s. This puts the words in the correct order but with each word reversed.
+
+Iterate through the reversed string:
+Use three pointers: i (iteration pointer), l (start of the current word), and r (end of the current word).
+Iterate through the reversed string using i.
+
+Extract and reverse each word:
+While i is within the string's bounds and the current character is not a space:
+Copy the character from s[i] to s[r].
+Increment i and r.
+
+If l is less than r (meaning a word was found):
+Reverse the characters from s[l] to s[r] (reverse the current word).
+Add a space at s[r] to separate the words.
+Increment r.
+Update l to r to prepare for the next word.
+
+Remove trailing space:
+After processing all words, remove the trailing space from the string.
+
+Return the result:
+Return the modified string s.
+Logic Explanation:
+`
+
+Reverse the entire string: Reversing the entire string first places the words in the correct order. However, each word is also reversed.
+
+Iterate and reverse words: The algorithm iterates through the reversed string, extracting and reversing each word.
+
+In-place reversal: The algorithm performs in-place reversals of the entire string and individual words, making it efficient in terms of space complexity.
+
+Trailing space: The trailing space is removed because it was added after reversing the last word.
+
+Example:
+
+Input: s = "the sky is blue"
+
+Reverse the entire string: s = "eulb si yks eht"
+
+Iterate and reverse words:
+
+i = 0, l = 0, r = 0
+Extract "eulb", reverse it: s = "blue si yks eht"
+Add space: s = "blue si yks eht "
+i = 5, l = 5, r = 5
+Extract "si", reverse it: s = "blue is yks eht "
+Add space: s = "blue is yks eht "
+i = 8, l = 8, r = 8
+Extract "yks", reverse it: s = "blue is sky eht "
+Add space: s = "blue is sky eht "
+i = 12, l = 12, r = 12
+Extract "eht", reverse it: s = "blue is sky the "
+Add space: s = "blue is sky the "
+Remove trailing space: s = "blue is sky the"
+
+Return result: s = "blue is sky the"
+
+
+
+

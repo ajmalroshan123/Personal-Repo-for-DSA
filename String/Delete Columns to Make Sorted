@@ -1,0 +1,29 @@
+      
+      Leetcode Link :- https://leetcode.com/problems/delete-columns-to-make-sorted/description/
+      
+      
+      
+  class Solution:
+    def minDeletionSize(self, strs: List[str]) -> int:
+        res = 0
+
+        for i in range(len(strs[0])):
+            for j in range(1, len(strs)):
+                if strs[j][i] < strs[j-1][i]:
+                    res += 1
+                    break
+        return res            
+        
+        
+        
+
+Algo :-
+---------------
+
+Example Walkthrough
+Let's consider an example to illustrate how this works:
+Suppose strs = ["cba", "daf", "ghi"].
+Column 0: Compare 'c' (from "cba") with 'd' (from "daf"). Since 'c' < 'd', this column is fine.
+Column 1: Compare 'b' (from "cba") with 'a' (from "daf"). Here, 'b' > 'a', so this column is unsorted. Increment res to 1.
+Column 2: Compare 'a' (from "cba") with 'f' (from "daf"). Since 'a' < 'f', this column is fine.
+The final result would be res = 1, indicating one column needs to be deleted.        

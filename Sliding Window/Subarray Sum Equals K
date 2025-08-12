@@ -1,0 +1,106 @@
+Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+ 
+
+Example 1:
+
+Input: nums = [1,1,1], k = 2
+Output: 2
+Example 2:
+
+Input: nums = [1,2,3], k = 3
+Output: 2
+
+--------------------------------------------------------------
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int, int> mp;
+        mp[0] = 1;
+        int total = 0;
+        int prefixSum = 0;
+
+        for (int i = 0; i < nums.size(); i++) {
+            prefixSum += nums[i];
+
+            if (mp.count(prefixSum - k)) {
+                total += mp[prefixSum - k];
+                mp[prefixSum]++;
+            }
+            else {
+                mp[prefixSum]++;
+            }
+        }
+        return total;
+    }
+};
+
+
+
+
+
+
+
+
+
+I can definitely explain that code in a simple way!
+
+Imagine you have a big stack of colorful blocks, and each block has a number on it. You want to find out how many different ways you can pick a small, connected group of blocks from the big stack that adds up to a specific number, let's say k.
+
+This code helps you count those groups without having to check every single possible group one by one, which would take a very long time!
+
+Here's how it works, step-by-step:
+
+What the code is using:
+
+mp (a "notebook"): This is a special notebook where you write down a number and how many times you've seen that number as a "running total" so far. The key is the running total, and the value is how many times you've seen it.
+
+prefixSum (your "running total"): This is a number that keeps getting bigger as you go through the blocks. It's the sum of all the numbers on the blocks you've looked at so far, starting from the very beginning.
+
+total (your "final count"): This is where you keep a tally of all the groups you've found that add up to k.
+
+The Game Plan:
+
+Start the game:
+
+You start with your notebook mp. You write down that you've seen a running total of 0 exactly 1 time. (This is a clever trick, because a group that adds up to k starting from the very beginning is like having a running total of k and a previous running total of 0).
+
+Your running total prefixSum is 0.
+
+Your final count total is 0.
+
+Go through each block, one by one:
+
+You pick up the first block, then the second, and so on.
+
+For each block, you add its number to your prefixSum.
+
+Now, you do the most important check! You think: "If I found a group that adds up to k right now, what would the running total have been before this group started?"
+
+The answer is: prefixSum - k.
+
+Check your notebook:
+
+You look in your notebook mp to see if you've ever had a prefixSum that equals prefixSum - k.
+
+If you find it: This means there was a point in the past where the running total was exactly prefixSum - k. The blocks between that point and now must add up to k!
+
+The notebook tells you how many times you've seen that past prefixSum. You add that number to your total count.
+
+You also write down your current prefixSum in the notebook, adding 1 to its count.
+
+If you don't find it: That's okay! It just means there wasn't a group that ended with this block and added up to k.
+
+You just write down your current prefixSum in the notebook, adding 1 to its count.
+
+Finish the game:
+
+You keep doing this until you've looked at every single block.
+
+When you're all done, the number in your total variable is the final answer! You've found all the groups that add up to k.
+
+Why this is so smart:
+
+Instead of checking every single possible group (which can be a lot!), this method only looks at the running totals you've seen. By using the prefixSum and the notebook (mp), you can quickly figure out if a group with the right sum has just ended, without having to re-calculate everything. It's a much faster and clever way to solve the problem!

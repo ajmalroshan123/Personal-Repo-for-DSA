@@ -1,0 +1,171 @@
+Given an array of characters chars, compress it using the following algorithm:
+
+Begin with an empty string s. For each group of consecutive repeating characters in chars:
+
+If the group's length is 1, append the character to s.
+Otherwise, append the character followed by the group's length.
+The compressed string s should not be returned separately, but instead, be stored in the input character array chars. Note that group lengths that are 10 or longer will be split into multiple characters in chars.
+
+After you are done modifying the input array, return the new length of the array.
+
+You must write an algorithm that uses only constant extra space.
+
+ 
+
+Example 1:
+
+Input: chars = ["a","a","b","b","c","c","c"]
+Output: Return 6, and the first 6 characters of the input array should be: ["a","2","b","2","c","3"]
+Explanation: The groups are "aa", "bb", and "ccc". This compresses to "a2b2c3".
+Example 2:
+
+Input: chars = ["a"]
+Output: Return 1, and the first character of the input array should be: ["a"]
+Explanation: The only group is "a", which remains uncompressed since it's a single character.
+Example 3:
+
+Input: chars = ["a","b","b","b","b","b","b","b","b","b","b","b","b"]
+Output: Return 4, and the first 4 characters of the input array should be: ["a","b","1","2"].
+Explanation: The groups are "a" and "bbbbbbbbbbbb". This compresses to "ab12".
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+int compress(vector<char>& chars) {
+    int n = chars.size();  // number of chars in input
+
+    int index = 0; // position to write compressed result in chars
+    int i = 0;     // reader pointer to traverse through chars
+
+    while(i < n) {
+        char curr_char = chars[i]; // the character we are currently counting
+        int count = 0;             // how many times curr_char repeats
+
+        // COUNT how many times curr_char appears continuously
+        while(i < n && chars[i] == curr_char) {
+            count++;
+            i++;
+        }
+
+        // WRITE the character to the write position
+        chars[index] = curr_char;
+        index++;
+
+        // If count > 1, write its digits separately
+        if(count > 1) {
+            string count_str = to_string(count); // e.g. 3 -> "3", 12 -> "12"
+            for (auto &ch : count_str) {
+                chars[index] = ch;
+                index++;
+            }
+        }
+    }
+    return index; // length of compressed string
+}
+
+-------------------------------------------------------------------------------------------------------------
+
+
+
+Step-by-step Example
+Let’s take:
+
+text
+chars = ["a","a","b","b","c","c","c"]
+n = 7
+index = 0, i = 0
+First group: 'a'
+Set curr_char = 'a'.
+
+Count how many 'a':
+
+i=0 → count=1
+
+i=1 → count=2
+
+stop at i=2 because now chars is 'b'.
+
+Write 'a':
+
+chars = 'a', index = 1
+
+Since count = 2, write "2" as characters:
+
+chars = '2', index = 2
+
+Now chars looks like:
+
+text
+["a","2","b","b","c","c","c"]  index=2, i=2
+Second group: 'b'
+curr_char = 'b'
+
+Count 'b':
+
+i=2 → count=1
+
+i=3 → count=2
+
+stop at i=4 ('c')
+
+Write 'b':
+
+chars = 'b', index=3
+
+count=2 → write "2":
+
+chars = '2', index=4
+
+Now:
+
+text
+["a","2","b","2","c","c","c"]
+index=4, i=4
+Third group: 'c'
+curr_char = 'c'
+
+Count 'c':
+
+i=4 → count=1
+
+i=5 → count=2
+
+i=6 → count=3
+
+stop at i=7 (i >= n)
+
+Write 'c':
+
+chars = 'c', index=5
+
+count=3 → write "3":
+
+chars = '3', index=6
+
+Now:
+
+text
+["a","2","b","2","c","3"]
+index=6, i=7
+Final result
+Compressed vector: ["a","2","b","2","c","3"]
+
+Return value: 6 (new length)
+
+Key points to understand
+Two pointers
+
+i reads original characters.
+
+index writes compressed result in-place.
+
+Counting consecutive characters
+Inner while loop counts how many times current char repeats.
+
+In-place writing
+We overwrite chars as we process—no extra array for results.
+
+Handling multi-digit counts
+If count is > 9 (like "a"*12), to_string(count) ensures digits "1","2" are written separately.
+
+

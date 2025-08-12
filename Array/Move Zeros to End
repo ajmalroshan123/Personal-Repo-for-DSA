@@ -1,0 +1,28 @@
+
+      Leetcode Link :-   https://leetcode.com/problems/move-zeroes/description/
+      
+      
+      
+ class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        l = 0
+        for r in range(len(nums)):
+            if nums[r]:
+                nums[l], nums[r] = nums[r], nums[l]
+                l += 1
+        return nums        
+
+
+Algo:-
+------------
+
+Start with l = 0.
+Iterate through each element:
+At index 0: nums is 0 (do nothing).
+At index 1: nums is 1 (swap with nums, now nums = [1, 0, 0, 3, 12], increment l to 1).
+At index 2: nums is 0 (do nothing).
+At index 3: nums is 3 (swap with nums, now nums = [1, 3, 0, 0, 12], increment l to 2).
+At index 4: nums is 12 (swap with nums, now nums = [1, 3, 12, 0, 0], increment l to 3).
