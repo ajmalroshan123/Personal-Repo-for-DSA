@@ -1,0 +1,172 @@
+Given two binary strings a and b, return their sum as a binary string.
+
+ 
+
+Example 1:
+
+Input: a = "11", b = "1"
+Output: "100"
+Example 2:
+
+Input: a = "1010", b = "1011"
+Output: "10101"
+ 
+
+Constraints:
+
+1 <= a.length, b.length <= 104
+a and b consist only of '0' or '1' characters.
+Each string does not contain leading zeros except for the zero itself.
+
+
+-----------------------------------------------------------------------
+
+
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        int alen = a.length();
+        int blen = b.length();
+        int i = 0, carry = 0;
+        string ans = "";
+
+        while(i < alen || i < blen || carry != 0) {
+            int x = 0;
+            if (i < alen && a[alen-i-1] == '1') {
+                x = 1;
+            }
+
+            int y = 0;
+            if (i < blen && b[blen-i-1] == '1') {
+                y = 1;
+            }
+
+            ans = to_string((x+y+carry)%2) + ans;
+            carry = (x + y + carry) / 2;
+            i += 1;
+        }
+        return ans;
+    }
+};
+
+
+------------------------------------------------------------------------------
+
+
+
+🧠 What the problem is
+
+You are given two binary strings like:
+
+a = "1010"
+b = "1011"
+
+
+You must return the binary sum as a string:
+
+Output → "10101"
+
+
+Binary addition works like decimal addition but base 2:
+
+  1010   (10 in decimal)
++ 1011   (11 in decimal)
+-------
+ 10101   (21 in decimal)
+
+🧩 Step-by-step breakdown of the code
+string addBinary(string a, string b)
+
+
+This function takes two strings a and b as input.
+
+Step 1: Find lengths and initialize
+int alen = a.length();
+int blen = b.length();
+int i = 0, carry = 0;
+string ans = "";
+
+
+alen = length of a
+
+blen = length of b
+
+i = position counter (starting from rightmost bit)
+
+carry = carry bit (just like in normal addition)
+
+ans = final answer (we’ll build it bit by bit)
+
+Step 2: Loop until everything is processed
+while(i < alen || i < blen || carry != 0)
+
+
+We keep looping while there are bits left in either string or there’s a carry still left.
+
+Step 3: Extract bits from right to left
+int x = 0;
+if (i < alen && a[alen-i-1] == '1') {
+    x = 1;
+}
+
+int y = 0;
+if (i < blen && b[blen-i-1] == '1') {
+    y = 1;
+}
+
+
+We take bits from the end of each string (since the rightmost bit is the least significant).
+
+Example:
+
+a = "1010" → index from right = [3, 2, 1, 0]
+b = "1011"
+
+
+When i = 0,
+a[alen - i - 1] = a[3] = '0' → x = 0
+b[blen - i - 1] = b[3] = '1' → y = 1
+
+Step 4: Add them and handle carry
+ans = to_string((x + y + carry) % 2) + ans;
+carry = (x + y + carry) / 2;
+
+
+Binary addition rules:
+
+x	y	carry	sum	new carry
+0	0	0	0	0
+0	1	0	1	0
+1	1	0	0	1
+1	1	1	1	1
+
+(x + y + carry) % 2 → gives current bit of the result
+
+(x + y + carry) / 2 → gives next carry value
+
+We add the new bit to the front of ans (since we’re moving right-to-left).
+
+Step 5: Continue until all bits done
+
+After each loop, increase i:
+
+i += 1;
+
+Step 6: Return the result
+return ans;
+
+🧮 Let’s see an example
+
+Input:
+
+a = "1010"
+b = "1011"
+
+Step	a bit	b bit	carry in	sum	carry out	result
+i=0	0	1	0	1	0	"1"
+i=1	1	1	0	0	1	"01"
+i=2	0	0	1	1	0	"101"
+i=3	1	1	0	0	1	"0101"
+i=4	-	-	1	1	0	"10101"
+
+Final Output: "10101"

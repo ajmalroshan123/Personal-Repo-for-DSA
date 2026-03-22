@@ -1,0 +1,104 @@
+Given an array of integers nums, return the number of good pairs.
+
+A pair (i, j) is called good if nums[i] == nums[j] and i < j.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3,1,1,3]
+Output: 4
+Explanation: There are 4 good pairs (0,3), (0,4), (3,4), (2,5) 0-indexed.
+Example 2:
+
+Input: nums = [1,1,1,1]
+Output: 6
+Explanation: Each pair in the array are good.
+Example 3:
+
+Input: nums = [1,2,3]
+Output: 0
+ 
+
+Constraints:
+
+1 <= nums.length <= 100
+1 <= nums[i] <= 100
+------------------------------------------------------------------------
+
+
+
+class Solution {
+public:
+    int numIdenticalPairs(vector<int>& nums) {
+        int n = nums.size();
+
+        int result = 0;
+        unordered_map<int, int> mp;
+
+        for (int &num: nums) {
+            mp[num]++;
+        }
+
+        for(auto &it: mp) {
+            int count = it.second;
+
+            result += (count * (count - 1)) / 2;
+        }
+
+        return result;
+
+        
+    }
+};
+
+
+
+------------------------------------------------------------------------------
+
+
+
+class Solution {
+public:
+    int numIdenticalPairs(vector<int>& nums) {
+        int result = 0;
+        unordered_map<int, int> mp; // keeps track of how many times a number has appeared
+
+        for (int &num: nums) {
+            result += mp[num];  // every previous occurrence of num forms a "good pair" with this one
+            mp[num]++;          // mark this number as seen once more
+        }
+
+        return result;
+    }
+}
+
+
+
+How it Works
+As you iterate through nums,
+
+Suppose you encounter a number x.
+
+If x has already appeared k times before, then this new x forms k new good pairs with those earlier ones.
+
+So we add mp[x] to the result.
+
+Then we increment mp[x] because we’ve now seen one more x.
+
+Example
+nums = [1, 2, 3, 1, 1, 3]
+
+First 1: mp[1] = 0 → result = 0, then mp[1] = 1
+
+2: mp[2] = 0 → result = 0, then mp[2] = 1
+
+3: mp[3] = 0 → result = 0, then mp[3] = 1
+
+Second 1: mp[1] = 1 → result = 1, then mp[1] = 2
+
+Third 1: mp[1] = 2 → result = 3, then mp[1] = 3
+
+Second 3: mp[3] = 1 → result = 4, then mp[3] = 2
+
+✅ Final result = 4 good pairs
